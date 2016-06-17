@@ -17,14 +17,18 @@ def filter_by_extension(bundle, extension):
 def render_as_tags(bundle):
     tags = []
     for chunk in bundle:
+        if 'integrity' in chunk:
+            integrity = ' integrity="{0}"'.format(chunk['integrity'])
+        else:
+            integrity = ''
         if chunk['name'].endswith('.js'):
             tags.append((
-                '<script type="text/javascript" src="{0}"></script>'
-            ).format(chunk['url']))
+                '<script type="text/javascript" src="{0}"{1}></script>'
+            ).format(chunk['url'], integrity))
         elif chunk['name'].endswith('.css'):
             tags.append((
-                '<link type="text/css" href="{0}" rel="stylesheet"/>'
-            ).format(chunk['url']))
+                '<link type="text/css" href="{0}"{1} rel="stylesheet"/>'
+            ).format(chunk['url'], integrity))
     return mark_safe('\n'.join(tags))
 
 
